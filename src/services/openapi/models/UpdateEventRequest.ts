@@ -9,5 +9,7 @@ export type UpdateEventRequest = {
     poster?: string;
     price?: number;
     url?: string;
+    locationId?: string;
+    comedianIds?: Array<string>;
 };
 

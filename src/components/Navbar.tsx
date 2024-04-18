@@ -35,6 +35,9 @@ const Navbar = () => {
           <Link as={RouteLink} to="/shows" color="white">
             <Text fontSize="md">Eventos</Text>
           </Link>
+          <Link as={RouteLink} to="/locations" color="white">
+            <Text fontSize="md">Localizações</Text>
+          </Link>
         </HStack>
       </Flex>
     </Box>

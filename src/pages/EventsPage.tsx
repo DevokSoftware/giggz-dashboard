@@ -6,51 +6,51 @@ import {
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
   Button,
   Spinner,
   Box,
+  Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Link as RouteLink } from "react-router-dom";
 import {
-  ComedianResponse,
-  ComedianService,
-  ComediansGetFiltersParameter,
+  EventResponse,
+  EventService,
+  EventsGetFiltersParameter,
   Pageable,
 } from "../services/openapi";
 import useApi from "../services/useApi";
+import moment from "moment";
 
-const ComediansPage = () => {
-  const [comedians, setComedians] = useState<ComedianResponse[]>([]);
+const EventsPage = () => {
+  const [events, setEvents] = useState<EventResponse[]>([]);
   const { isLoading, error, handleRequest } = useApi();
   const [pageable, setPageable] = useState<Pageable>({});
-  const [filters, setFilters] = useState<ComediansGetFiltersParameter>({});
+  const [filters, setFilters] = useState<EventsGetFiltersParameter>({});
   useEffect(() => {
-    const fetchComedians = async () => {
+    const fetchEvents = async () => {
       try {
-        //TODO implement pageable
-        const comediansResponse = await handleRequest(
-          ComedianService.comediansGet(pageable, filters)
+        const eventsResponse = await handleRequest(
+          EventService.eventsGet(pageable, filters)
         );
-        setComedians(comediansResponse?.content || []);
+        setEvents(eventsResponse?.content || []);
       } catch (error) {
         // TODO handle this errors in a generic way
         console.error(error);
       }
     };
-    fetchComedians();
+    fetchEvents();
   }, [handleRequest]);
 
   const handleDelete = async (id: string) => {
     await handleRequest(
-      ComedianService.comediansComedianIdDelete(id as unknown as number)
+      EventService.eventsEventIdDelete(id as unknown as number)
     );
-    const comediansResponse = await handleRequest(
-      ComedianService.comediansGet(pageable, filters)
+    const eventsResponse = await handleRequest(
+      EventService.eventsGet(pageable, filters)
     );
-    setComedians(comediansResponse?.content || []);
+    setEvents(eventsResponse?.content || []);
   };
 
   return (
@@ -66,16 +66,16 @@ const ComediansPage = () => {
       ) : (
         <>
           <Box textAlign="end">
-            <RouteLink to={`/comedians/create`}>
+            <RouteLink to={`/shows/create`}>
               <Button colorScheme="green" size="sm" mt="3" mr="3">
-                Criar comediante
-              </Button>{" "}
+                Criar evento
+              </Button>
             </RouteLink>
           </Box>
           <Box
             pl={{ base: 3, sm: 5, md: 10, lg: 20 }}
             pr={{ base: 3, sm: 5, md: 10, lg: 20 }}
-            maxW="1000px"
+            maxW="1300px"
             mx="auto"
           >
             <TableContainer>
@@ -83,15 +83,32 @@ const ComediansPage = () => {
                 <Thead>
                   <Tr>
                     <Th>Nome</Th>
+                    <Th>Localização</Th>
+                    <Th>Data</Th>
+                    <Th>Comediantes</Th>
                     <Th></Th>
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {comedians.map((comedian) => (
-                    <Tr key={comedian.id}>
-                      <Td>{comedian.name}</Td>
+                  {events.map((event) => (
+                    <Tr key={event.id}>
+                      <Td>{event.name}</Td>
+                      <Td>
+                        {event.location?.name}, {event.location?.city}
+                      </Td>
+
+                      <Td>
+                        {moment(event.date)
+                          .locale("pt-br")
+                          .format("DD [de] MMMM, y")}
+                      </Td>
+                      <Td>
+                        {event.comedians?.map((comedian) => (
+                          <Text>{comedian.name}</Text>
+                        ))}
+                      </Td>
                       <Td textAlign="end">
-                        <RouteLink to={`/comedians/${comedian.id}`}>
+                        <RouteLink to={`/shows/${event.id}`}>
                           <Button colorScheme="green" size="xs">
                             Editar
                           </Button>
@@ -100,7 +117,7 @@ const ComediansPage = () => {
                           colorScheme="green"
                           size="xs"
                           ml="3"
-                          onClick={() => handleDelete(comedian.id)}
+                          onClick={() => handleDelete(event.id)}
                         >
                           Eliminar
                         </Button>
@@ -117,4 +134,4 @@ const ComediansPage = () => {
   );
 };
 
-export default ComediansPage;
+export default EventsPage;

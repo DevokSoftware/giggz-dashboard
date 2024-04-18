@@ -3,24 +3,18 @@ import {
   Button,
   FormControl,
   FormLabel,
-  HStack,
   Input,
-  Link,
-  Spinner,
   Stack,
-  Text,
 } from "@chakra-ui/react";
 import {
   Formik,
   Form,
   Field,
   ErrorMessage,
-  FormikHelpers,
   FieldInputProps,
   FormikProps,
 } from "formik";
-import { useEffect, useState } from "react";
-import { Link as RouteLink, useParams } from "react-router-dom";
+
 import { ComedianService, CreateComedianRequest } from "../services/openapi";
 import useApi from "../services/useApi";
 const ComedianCreatePage = () => {

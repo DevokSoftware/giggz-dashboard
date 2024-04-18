@@ -5,7 +5,6 @@
 import type { ContentInput } from './ContentInput';
 export type UpdateComedianRequest = {
     name?: string;
-    city?: string;
     picture?: string;
     instagram?: string;
     youtube?: string;

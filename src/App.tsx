@@ -9,7 +9,6 @@ import {
   Grid,
   theme,
 } from "@chakra-ui/react";
-import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import {
   BrowserRouter as Router,
   Routes,
@@ -24,6 +23,9 @@ import ComedianDetailsPage from "./pages/ComedianDetailsPage";
 import Login from "./pages/Login";
 import ComedianCreatePage from "./pages/ComedianCreatePage";
 import Navbar from "./components/Navbar";
+import EventsPage from "./pages/EventsPage";
+import EventCreatePage from "./pages/EventCreatePage";
+import EventDetailsPage from "./pages/EventDetailsPage";
 
 export const App = () => (
   <ChakraProvider theme={theme}>
@@ -44,6 +46,11 @@ export const App = () => (
                 path="/comedians/:comedianId"
                 element={<ComedianDetailsPage />}
               />
+            </Route>
+            <Route path="/shows" element={<Outlet />}>
+              <Route path="" element={<EventsPage />} />
+              <Route path="/shows/create" element={<EventCreatePage />} />
+              <Route path="/shows/:eventId" element={<EventDetailsPage />} />
             </Route>
           </Routes>
         </Box>
