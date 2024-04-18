@@ -120,7 +120,6 @@ const EventDetailsPage = () => {
   if (!event) {
     return <></>;
   }
-  console.log(event);
 
   return (
     <Box

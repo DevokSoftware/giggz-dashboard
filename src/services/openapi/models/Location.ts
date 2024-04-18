@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type Location = {
-    id?: string;
+    id: string;
     name: string;
     city: string;
     number?: string;
