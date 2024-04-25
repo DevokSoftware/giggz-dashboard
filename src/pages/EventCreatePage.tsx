@@ -20,7 +20,6 @@ import {
   ComedianResponse,
   ComedianService,
   CreateEventRequest,
-  EventResponse,
   EventService,
   Location,
   LocationService,
@@ -107,17 +106,7 @@ const EventCreatePage = () => {
 
     setFieldValue("comedianIds", ids);
   };
-  // if (isLoading) {
-  //   return (
-  //     <Spinner
-  //       thickness="4px"
-  //       speed="0.65s"
-  //       emptyColor="gray.200"
-  //       color="green.600"
-  //       size="xl"
-  //     />
-  //   );
-  // }
+
   return (
     <Box
       pl={{ base: 3, sm: 5, md: 10, lg: 20 }}
@@ -189,7 +178,6 @@ const EventCreatePage = () => {
                 {({ field, form }: FormFieldProps) => (
                   <FormControl>
                     <FormLabel>Data</FormLabel>
-                    {/* <Input {...field} size="sm" /> */}
 
                     <ReactDatePicker
                       selected={field.value ? new Date(field.value) : null} // Ensure field.value is a valid Date object

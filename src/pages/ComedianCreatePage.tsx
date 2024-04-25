@@ -3,6 +3,7 @@ import {
   Button,
   FormControl,
   FormLabel,
+  Image,
   Input,
   Stack,
 } from "@chakra-ui/react";
@@ -17,7 +18,11 @@ import {
 
 import { ComedianService, CreateComedianRequest } from "../services/openapi";
 import useApi from "../services/useApi";
+import { useAnimation } from "framer-motion";
 const ComedianCreatePage = () => {
+  const controls = useAnimation();
+  const startAnimation = () => controls.start("hover");
+  const stopAnimation = () => controls.stop();
   const { isLoading, error, handleRequest } = useApi();
 
   type FormFieldProps = {
@@ -32,17 +37,17 @@ const ComedianCreatePage = () => {
   const handleSubmit = async (values: CreateComedianRequest) => {
     await handleRequest(ComedianService.comediansPost(values));
   };
-  // if (isLoading) {
-  //   return (
-  //     <Spinner
-  //       thickness="4px"
-  //       speed="0.65s"
-  //       emptyColor="gray.200"
-  //       color="green.600"
-  //       size="xl"
-  //     />
-  //   );
-  // }
+  const handleFileChange = (event: any, setFieldValue: any) => {
+    const file = event.currentTarget.files[0];
+    if (file) {
+      // Convert file to base64 string
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFieldValue("picture", reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <Box
@@ -56,6 +61,45 @@ const ComedianCreatePage = () => {
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
           {() => (
             <Form>
+              <Field name="picture">
+                {({ field, form }: FormFieldProps) => (
+                  <FormControl>
+                    <Box>
+                      <Input
+                        type="file"
+                        height="100%"
+                        width="100%"
+                        position="absolute"
+                        top="0"
+                        left="0"
+                        opacity="0"
+                        aria-hidden="true"
+                        accept="image/*"
+                        onDragEnter={startAnimation}
+                        onDragLeave={stopAnimation}
+                        onChange={(event) =>
+                          handleFileChange(event, form.setFieldValue)
+                        }
+                      />
+                      <Image
+                        borderRadius="full"
+                        src={field.value}
+                        mx="auto"
+                        //modify this boxShadow
+                        boxShadow="3px 3px 13px 2px rgb(0 128 0 / 20%)"
+                        border={`2px solid white`}
+                        boxSize={{
+                          base: "120px",
+                          sm: "120px",
+                          md: "150px",
+                          lg: "200px",
+                        }}
+                        objectFit="cover"
+                      />
+                    </Box>
+                  </FormControl>
+                )}
+              </Field>
               <Field name="name">
                 {({ field, form }: FormFieldProps) => (
                   <FormControl>
